@@ -395,12 +395,12 @@
           <div class="proj-when">Jan 2026 — Present</div>
         </div>
         <ul class="proj-desc">
-          <li>Production-grade telemetry ingestion platform simulating industrial sensor monitoring pipelines — sub-second API response times under high-frequency time-series load.</li>
-          <li>PostgreSQL schemas optimized for time-range queries and aggregated metrics, enabling single-digit millisecond p99 query latency under concurrent load.</li>
-          <li>Real-time Grafana dashboards tracking ingestion latency, throughput, and service health.</li>
+          <li>Telemetry ingestion platform modeled on industrial/IoT sensor fleets, with decoupled write (ingest) and read (analytics) paths so dashboard queries never compete with ingestion for the same connection pool.</li>
+          <li>PostgreSQL schema indexed on (sensor_id, recorded_at) for range queries; load-tested at 681 req/s ingest and 763 req/s query throughput with p99 latency of ~100–140ms at 50 concurrent clients.</li>
+          <li>Prometheus + Grafana dashboards (1s refresh) for live request latency and throughput; a PySpark batch job computes hourly per-sensor rollups.</li>
         </ul>
         <div class="tag-row">
-          <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">PostgreSQL</span><span class="tag">Grafana</span><span class="tag">Time-Series</span>
+          <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">PostgreSQL</span><span class="tag">Prometheus</span><span class="tag">Grafana</span><span class="tag">PySpark</span><span class="tag">Docker</span>
         </div>
         <div class="proj-links">
           <a href="https://github.com/Abhishekpatro/operational-data-platform">Source →</a>
@@ -413,9 +413,8 @@
           <div class="proj-when">Sep 2025 — Nov 2025</div>
         </div>
         <ul class="proj-desc">
-          <li>Session-based API services with production-style request validation, structured error handling, and centralized logging.</li>
-          <li>Deployed with concurrent load testing showing stable latency under traffic spikes.</li>
-          <li>Instrumented performance monitoring to benchmark latency and throughput, resolving bottlenecks pre-deployment.</li>
+          <li>Session-based task API — short-lived tokens gate every endpoint, explicit 422 validation errors instead of silent failures, and structured per-request logging (request_id, latency_ms).</li>
+          <li>Included load-test script drives configurable concurrency and prints p50/p99 latency and success rate, backing up "stable under traffic spikes" with actual numbers.</li>
         </ul>
         <div class="tag-row">
           <span class="tag">Python</span><span class="tag">REST APIs</span><span class="tag">Async I/O</span>
