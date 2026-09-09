@@ -24,6 +24,8 @@
     --text-dimmer: #5C6885;
     --amber: #F2A93B;
     --cyan: #43D9C8;
+    --lime: #C6F24E;
+    --bg-on-accent: #06120F;
     --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
     --sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --maxw: 1120px;
@@ -121,7 +123,8 @@
   @keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:0.35;} }
   .path-bar{
     font-family:var(--mono); font-size:12px; color:var(--text-dimmer);
-    display:flex; align-items:center; gap:10px; flex:1; overflow:hidden;
+    display:flex; align-items:center; gap:10px; flex:1; overflow:hidden; min-width:0;
+    white-space:nowrap; text-overflow:ellipsis;
   }
   .path-bar .branch{ color:var(--text-dim); }
   @media (max-width:860px){ .path-bar{ display:none; } }
@@ -349,14 +352,14 @@
   .job li{ position:relative; padding-left:20px; color:var(--text-dim); font-size:14.5px; }
   .job li::before{ content:'▸'; position:absolute; left:0; color:var(--cyan); font-size:12px; top:2px; }
 
-  /* ---------- PROJECTS ---------- */
+  /* ---------- PROJECTS (bento) ---------- */
   .projects-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
   @media (max-width:800px){ .projects-grid{ grid-template-columns:1fr; } }
   .proj-card{
     background:
       radial-gradient(560px circle at var(--mx,50%) var(--my,50%), rgba(67,217,200,0.08), transparent 42%),
       var(--panel);
-    border:1px solid var(--panel-border); border-radius:10px;
+    border:1px solid var(--panel-border); border-radius:14px;
     padding:24px; display:flex; flex-direction:column; gap:14px;
     transition:opacity .55s ease, transform .55s ease, border-color .2s ease, box-shadow .2s ease;
     will-change:transform;
@@ -364,6 +367,26 @@
   .proj-card:hover{ border-color:var(--panel-border-hover); box-shadow:0 16px 40px -18px rgba(67,217,200,0.28); }
   .projects-grid .proj-card:nth-child(2){ transition-delay:.08s; }
   .projects-grid .proj-card:nth-child(3){ transition-delay:.16s; }
+  .proj-card.featured{
+    grid-column:1 / -1;
+    background:
+      radial-gradient(560px circle at var(--mx,50%) var(--my,50%), rgba(67,217,200,0.08), transparent 42%),
+      linear-gradient(135deg, rgba(67,217,200,0.08), transparent 55%),
+      var(--panel);
+    border-color:var(--panel-border-hover);
+    display:grid;
+    grid-template-columns:1.3fr 0.9fr;
+    grid-template-areas:"top top" "desc side";
+    column-gap:32px; row-gap:14px;
+    padding:28px;
+  }
+  .proj-card.featured .proj-top{ grid-area:top; }
+  .proj-card.featured .proj-desc{ grid-area:desc; }
+  .proj-card.featured .proj-side{ grid-area:side; display:flex; flex-direction:column; gap:16px; padding-top:2px; }
+  .proj-card.featured .proj-name{ font-size:19px; }
+  @media (max-width:800px){
+    .proj-card.featured{ grid-template-columns:1fr; grid-template-areas:"top" "desc" "side"; }
+  }
   .proj-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
   .proj-name{ font-family:var(--mono); font-size:16px; font-weight:600; }
   .proj-when{ font-family:var(--mono); font-size:11px; color:var(--text-dimmer); white-space:nowrap; }
@@ -381,19 +404,23 @@
   .proj-links a{ font-family:var(--mono); font-size:12px; color:var(--cyan); }
   .proj-links a:hover{ text-decoration:underline; }
 
-  /* ---------- SKILLS ---------- */
-  .skills-grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:14px; }
-  @media (max-width:720px){ .skills-grid{ grid-template-columns:1fr; } }
+  /* ---------- SKILLS (bento) ---------- */
+  .skills-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; }
+  @media (max-width:900px){ .skills-grid{ grid-template-columns:repeat(2, 1fr); } .skills-grid .skill-cat{ grid-column:span 1 !important; } }
+  @media (max-width:520px){ .skills-grid{ grid-template-columns:1fr; } }
   .skill-cat{
-    background:var(--panel); border:1px solid var(--panel-border); border-radius:8px; padding:18px 20px;
+    background:linear-gradient(160deg, rgba(67,217,200,0.06), transparent 60%), var(--panel);
+    border:1px solid var(--panel-border); border-radius:12px; padding:20px 22px;
     transition:opacity .55s ease, transform .3s ease, border-color .2s ease;
   }
+  .skill-cat:nth-child(even){ background:linear-gradient(160deg, rgba(242,169,59,0.05), transparent 60%), var(--panel); }
   .skill-cat:hover{ border-color:var(--panel-border-hover); transform:translateY(-2px); }
-  .skills-grid .skill-cat:nth-child(2){ transition-delay:.06s; }
-  .skills-grid .skill-cat:nth-child(3){ transition-delay:.12s; }
-  .skills-grid .skill-cat:nth-child(4){ transition-delay:.18s; }
-  .skills-grid .skill-cat:nth-child(5){ transition-delay:.24s; }
-  .skills-grid .skill-cat:nth-child(6){ transition-delay:.30s; }
+  .skills-grid .skill-cat:nth-child(1){ grid-column:span 1; }
+  .skills-grid .skill-cat:nth-child(2){ grid-column:span 3; transition-delay:.06s; }
+  .skills-grid .skill-cat:nth-child(3){ grid-column:span 2; transition-delay:.12s; }
+  .skills-grid .skill-cat:nth-child(4){ grid-column:span 2; transition-delay:.18s; }
+  .skills-grid .skill-cat:nth-child(5){ grid-column:span 2; transition-delay:.24s; }
+  .skills-grid .skill-cat:nth-child(6){ grid-column:span 2; transition-delay:.30s; }
   .skill-cat h3{
     font-family:var(--mono); font-size:12px; color:var(--amber); text-transform:uppercase;
     letter-spacing:0.06em; margin-bottom:10px; font-weight:600;
@@ -601,7 +628,7 @@
       <span class="section-num">03</span><span class="section-title">projects</span>
     </div>
     <div class="projects-grid">
-      <div class="proj-card reveal">
+      <div class="proj-card featured reveal">
         <div class="proj-top">
           <div class="proj-name">Real-Time Event Streaming & Alerting Platform</div>
           <div class="proj-when">Sep 2026 — Present</div>
@@ -611,11 +638,13 @@
           <li>Load-tested at 500 events/sec sustained with zero events lost across a 10,000-event run; p99 ingestion API response under 1ms since the hot path only publishes to Kafka, with no DB write blocking the request.</li>
           <li>9 containerized services brought up with one command (`make up`); 51 automated tests (unit, integration, load) verified passing against the running stack; Prometheus + Grafana dashboard auto-provisioned for live pipeline health.</li>
         </ul>
-        <div class="tag-row">
-          <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">Kafka</span><span class="tag">PySpark</span><span class="tag">PostgreSQL</span><span class="tag">Redis</span><span class="tag">Claude API</span><span class="tag">Grafana</span>
-        </div>
-        <div class="proj-links">
-          <a href="https://github.com/Abhishekpatro/realtime-event-alerting-platform">Source →</a>
+        <div class="proj-side">
+          <div class="tag-row">
+            <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">Kafka</span><span class="tag">PySpark</span><span class="tag">PostgreSQL</span><span class="tag">Redis</span><span class="tag">Claude API</span><span class="tag">Grafana</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/Abhishekpatro/realtime-event-alerting-platform">Source →</a>
+          </div>
         </div>
       </div>
 
